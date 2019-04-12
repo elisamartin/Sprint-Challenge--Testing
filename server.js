@@ -24,4 +24,34 @@ server.post('/games', (req, res) => {
 	}
 });
 
+// Stretch - GET by id - DELETE
+
+server.get('/games/:id', async (req, res) => {
+	const { id } = req.params;
+	if (id) {
+		try {
+			const game = await games.getById(id);
+			res.status(200).json(game);
+		} catch (err) {
+			res.status(500).json(err);
+		}
+	} else {
+		res.status(500).json({ message: 'Bad request' });
+	}
+});
+
+server.delete('/games/:id', async (req, res) => {
+	const { id } = req.params;
+	if (id) {
+		try {
+			const response = await games.remove(id);
+			res.status(200).json(response);
+		} catch (err) {
+			res.status(500).json(err);
+		}
+	} else {
+		res.status(500).json({ message: 'Bad request' });
+	}
+});
+
 module.exports = server;

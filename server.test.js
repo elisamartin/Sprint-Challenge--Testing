@@ -3,6 +3,13 @@ const request = require('supertest');
 const db = require('./data/dbConfig.js');
 
 describe('server', () => {
+	beforeEach(async () => {
+		await db('games').truncate();
+	});
+	afterEach(async () => {
+		await db('games').truncate();
+	});
+
 	describe('GET / endpoint', () => {
 		it('status code 200', () => {
 			return request(server).get('/').expect(200);
@@ -33,13 +40,6 @@ describe('server', () => {
 	});
 
 	describe('POST /games endpoint', () => {
-		beforeEach(async () => {
-			await db('games').truncate();
-		});
-		afterEach(async () => {
-			await db('games').truncate();
-		});
-
 		const game = {
 			title: 'Pacman',
 			genre: 'Arcade',
@@ -60,4 +60,6 @@ describe('server', () => {
 			expect(response.res.statusMessage).toBe('Created');
 		});
 	});
+
+	describe('DELETE /games/id endpoint', () => {});
 });
