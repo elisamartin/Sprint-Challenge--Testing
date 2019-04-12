@@ -1,5 +1,6 @@
 const server = require('./server');
 const request = require('supertest');
+const db = require('./data/dbConfig.js');
 
 describe('server', () => {
 	describe('GET / endpoint', () => {
@@ -32,6 +33,9 @@ describe('server', () => {
 	});
 
 	describe('POST /games endpoint', () => {
+		beforeEach(async () => {
+			await db('games').truncate();
+		});
 		afterEach(async () => {
 			await db('games').truncate();
 		});
@@ -41,9 +45,9 @@ describe('server', () => {
 			genre: 'Arcade',
 			releaseYear: '1980'
 		};
-		it('insert successfully with status code 422', async () => {
+		it('insert successfully with status code 201', async () => {
 			const response = await request(server).post('/games').send(game);
-			expect(response.status).toBe(422);
+			expect(response.status).toBe(201);
 		});
 
 		it('inserts json', async () => {
