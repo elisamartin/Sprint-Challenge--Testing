@@ -1,4 +1,5 @@
 const express = require('express');
+const games = require('./data/gamesModel');
 
 const server = express();
 
